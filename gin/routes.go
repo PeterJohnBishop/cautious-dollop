@@ -18,6 +18,12 @@ func addOpenUserRoutes(r *gin.Engine, db *sql.DB) {
 	r.GET("/refresh", func(c *gin.Context) {
 		pgdb.Refresh(c)
 	})
+	r.POST("/onetime/upload", func(c *gin.Context) {
+		handleOneTimeFileUpload(c)
+	})
+	r.GET("/onetime/download", func(c *gin.Context) {
+		handleOneTimeFileDownload(c)
+	})
 }
 
 func addProtectedUserRoutes(r *gin.RouterGroup, db *sql.DB) {

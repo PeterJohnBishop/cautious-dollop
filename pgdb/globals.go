@@ -53,6 +53,8 @@ func getPostgresEnvs() {
 
 }
 
+var OTDLSecret string
+
 func getAuthEnvs() {
 	accessSecret = os.Getenv("TOKEN_SECRET")
 	if accessSecret == "" {
@@ -62,4 +64,9 @@ func getAuthEnvs() {
 	if refreshSecret == "" {
 		log.Fatal("REFRESH_TOKEN_SECRET is not set in .env file")
 	}
+	OTDLSecret = os.Getenv("OTDL_TOKEN_SECRET")
+	if OTDLSecret == "" {
+		log.Fatal("OTDL_TOKEN_SECRET is not set in .env file")
+	}
+	log.Println("Authentication Environment Variables Loaded")
 }
