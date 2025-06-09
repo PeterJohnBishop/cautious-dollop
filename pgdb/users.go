@@ -148,6 +148,7 @@ func Login(db *sql.DB, c *gin.Context) {
 		"user":         user,
 	})
 }
+
 func Refresh(c *gin.Context) {
 	var body struct {
 		RefreshToken string `json:"refresh_token"`

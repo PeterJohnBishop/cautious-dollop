@@ -36,26 +36,25 @@ func GenerateTokens(userID string) (accessToken, refreshToken string, err error)
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
 
-	accessToken, err = at.SignedString(accessSecret)
+	accessToken, err = at.SignedString([]byte(AccessSecret))
 	if err != nil {
 		return
 	}
-	refreshToken, err = rt.SignedString(refreshSecret)
+	refreshToken, err = rt.SignedString([]byte(RefreshSecret))
 	return
 }
 
 func ValidateToken(tokenStr string, isRefresh bool) (*UserClaims, error) {
 	fmt.Printf("Validating token: %s\n", tokenStr)
-	secret := accessSecret
+	secret := AccessSecret
 	if isRefresh {
 		fmt.Println("Using refresh token secret")
-		secret = refreshSecret
+		secret = RefreshSecret
 	}
 
 	token, err := jwt.ParseWithClaims(tokenStr, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return secret, nil
+		return []byte(secret), nil // ✅ convert string to []byte here
 	})
-
 	if err != nil {
 		fmt.Printf("Error parsing token: %v\n", err)
 		return nil, err

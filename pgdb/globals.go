@@ -12,8 +12,9 @@ var postgresPassword string
 var postgresDBName string
 var postgresHost string
 var postgresPort string
-var accessSecret string
-var refreshSecret string
+var AccessSecret string
+var RefreshSecret string
+var OTDLSecret string
 
 func initEnv() {
 	err := godotenv.Load()
@@ -53,15 +54,13 @@ func getPostgresEnvs() {
 
 }
 
-var OTDLSecret string
-
 func getAuthEnvs() {
-	accessSecret = os.Getenv("TOKEN_SECRET")
-	if accessSecret == "" {
+	AccessSecret = os.Getenv("TOKEN_SECRET")
+	if AccessSecret == "" {
 		log.Fatal("TOKEN_SECRET is not set in .env file")
 	}
-	refreshSecret = os.Getenv("REFRESH_TOKEN_SECRET")
-	if refreshSecret == "" {
+	RefreshSecret = os.Getenv("REFRESH_TOKEN_SECRET")
+	if RefreshSecret == "" {
 		log.Fatal("REFRESH_TOKEN_SECRET is not set in .env file")
 	}
 	OTDLSecret = os.Getenv("OTDL_TOKEN_SECRET")

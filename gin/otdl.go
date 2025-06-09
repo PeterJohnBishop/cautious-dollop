@@ -84,7 +84,10 @@ func handleOneTimeFileUpload(c *gin.Context) {
 		return
 	}
 
-	// Store file metadata
+	// Store file entry with expiration
+	// Use a mutex to ensure thread-safe access to the fileStore
+	// This is important if multiple uploads can happen concurrently
+	// or if the store is accessed from multiple goroutines.
 	storeMutex.Lock()
 	fileStore[fileID] = FileEntry{
 		Path:      dst,
@@ -101,12 +104,12 @@ func handleOneTimeFileUpload(c *gin.Context) {
 	downloadURL := fmt.Sprintf("/onetime/download?token=%s", url.QueryEscape(token))
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":      "File uploaded successfully",
-		"filename":     filename,
-		"path":         dst,
-		"download_url": downloadURL,
-		"free_space":   fmt.Sprintf("%.2f MB", float64(freeSpace)/(1024*1024)),
-		"file_size":    fmt.Sprintf("%.2f MB", float64(file.Size)/(1024*1024)),
+		"message":               "File uploaded successfully",
+		"filename":              filename,
+		"path":                  dst,
+		"one_time_download_url": downloadURL,
+		"free_space":            fmt.Sprintf("%.2f MB", float64(freeSpace)/(1024*1024)),
+		"file_size":             fmt.Sprintf("%.2f MB", float64(file.Size)/(1024*1024)),
 	})
 }
 
