@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"cautious-dollop/main.go/pgdb"
+	"cautious-dollop/main.go/postgresdb"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -40,7 +40,7 @@ func generateDownloadJWT(fileID string, duration time.Duration) (string, error) 
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(pgdb.OTDLSecret))
+	return token.SignedString([]byte(postgresdb.OTDLSecret))
 }
 
 func handleOneTimeFileUpload(c *gin.Context) {
@@ -121,7 +121,7 @@ func handleOneTimeFileDownload(c *gin.Context) {
 	}
 
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
-		return []byte(pgdb.OTDLSecret), nil
+		return []byte(postgresdb.OTDLSecret), nil
 	})
 
 	if err != nil || !token.Valid {

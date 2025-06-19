@@ -1,4 +1,4 @@
-package pgdb
+package postgresdb
 
 import (
 	"crypto/sha256"

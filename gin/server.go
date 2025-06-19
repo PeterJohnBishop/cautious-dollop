@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"cautious-dollop/main.go/pgdb"
+	"cautious-dollop/main.go/postgresdb"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,20 +14,20 @@ var db *sql.DB
 func InitServer() {
 
 	// connecting to Postgres
-	db := pgdb.ConnectPSQL(db)
+	db := postgresdb.ConnectPSQL(db)
 	err := db.Ping()
 	if err != nil {
 		log.Fatal("Error connecting to the database:", err)
 	}
 	defer db.Close()
 
-	pgdb.CreateUsersTable(db)
+	postgresdb.CreateUsersTable(db)
 
 	// creating gin server
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	protected := router.Group("/api")
-	protected.Use(pgdb.JWTMiddleware())
+	protected.Use(postgresdb.JWTMiddleware())
 
 	addOpenUserRoutes(router, db)
 	addProtectedUserRoutes(protected, db)

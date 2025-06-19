@@ -3,20 +3,20 @@ package servegin
 import (
 	"database/sql"
 
-	"cautious-dollop/main.go/pgdb"
+	"cautious-dollop/main.go/postgresdb"
 
 	"github.com/gin-gonic/gin"
 )
 
 func addOpenUserRoutes(r *gin.Engine, db *sql.DB) {
 	r.POST("/login", func(c *gin.Context) {
-		pgdb.Login(db, c)
+		postgresdb.Login(db, c)
 	})
 	r.POST("/register", func(c *gin.Context) {
-		pgdb.RegisterUser(db, c)
+		postgresdb.RegisterUser(db, c)
 	})
 	r.GET("/refresh", func(c *gin.Context) {
-		pgdb.Refresh(c)
+		postgresdb.Refresh(c)
 	})
 	r.GET("/onetime/download", func(c *gin.Context) {
 		handleOneTimeFileDownload(c)
@@ -26,16 +26,16 @@ func addOpenUserRoutes(r *gin.Engine, db *sql.DB) {
 func addProtectedUserRoutes(r *gin.RouterGroup, db *sql.DB) {
 
 	r.GET("/users", func(c *gin.Context) {
-		pgdb.GetUsers(db, c)
+		postgresdb.GetUsers(db, c)
 	})
 	r.GET("/users/:id", func(c *gin.Context) {
-		pgdb.GetUserByID(db, c)
+		postgresdb.GetUserByID(db, c)
 	})
 	r.PUT("/users", func(c *gin.Context) {
-		pgdb.UpdateUser(db, c)
+		postgresdb.UpdateUser(db, c)
 	})
 	r.DELETE("/users/:id", func(c *gin.Context) {
-		pgdb.DeleteUserByID(db, c)
+		postgresdb.DeleteUserByID(db, c)
 	})
 }
 
