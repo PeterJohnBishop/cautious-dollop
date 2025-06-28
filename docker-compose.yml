@@ -52,7 +52,7 @@ services:
       PSQL_PASSWORD: ${PSQL_PASSWORD}
       PSQL_DBNAME: ${PSQL_DBNAME}
     ports:
-      - "8081:8080" # Avoid port clash with uploader
+      - "8081:8080"
 
   node-server:
     build:
@@ -74,6 +74,19 @@ services:
       - ./node-server:/usr/src/app
     working_dir: /usr/src/app
     command: ["npm", "start"]
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+      - node-server
+      - secure-uploader-server
 
 volumes:
   uploader-data:

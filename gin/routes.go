@@ -9,6 +9,11 @@ import (
 )
 
 func addOpenUserRoutes(r *gin.Engine, db *sql.DB) {
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Hello from the Go server!",
+		})
+	})
 	r.POST("/login", func(c *gin.Context) {
 		postgresdb.Login(db, c)
 	})
