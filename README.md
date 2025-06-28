@@ -1,10 +1,23 @@
-# supreme-eureka
+# Go/Gin Server
 
-An API to create and manage file storage in a Docker managed volume.
+- API routes secured by JWT authentication
+- User data stored in Postgres DB
+- File storage is a local Docker managed volumn
+- OneTime file access managed with JWT with default expiration set to 15m
+    + download checks memory fileStore and valid expiration before serving file
+    + after download fileStore record is removed to invalidate the download token
 
-Add your own authentication method.
+# Node/Express Server
 
-## installation
+- in progress
+
+# nginx
+
+- http://localhost/... Go server open endpoints
+- http://localhost/api/... Go server secure endpoints
+- http://localhost/node/... Node server open endpoints
+
+# installation
 
 docker pull peterjbishop/cautious-dollop:latest 
 docker-compose build --no-cache 
@@ -23,7 +36,7 @@ example:
  cd {your_download_directory}
  curl -o "The Home Depot - Cart.png" "http://localhost:8080/download/The%20Home%20Depot%20-%20Cart.png"
 
-## Notes
+## build
 
 docker build -t peterjbishop/cautious-dollop:latest . 
 docker push peterjbishop/cautious-dollop:latest 
